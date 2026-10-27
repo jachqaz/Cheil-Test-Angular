@@ -87,3 +87,8 @@
   reclamaba los archivos de la app en dos proyectos de *references* a la vez. Revertido el
   spec a `*.d.ts` + `*.spec.ts` (el fallo original de tests era la ruta de import de
   `environment`, ya corregida, no el include). Dev + prod + 12 tests verdes.
+- **2026-10-27 (fix 2)** — el error reaparecía en la terminal del director por caché
+  persistente del dev-server. Solución definitiva: declarar `src/main.ts` en `files` de
+  `tsconfig.app.json` (como recomienda el propio mensaje de Angular); fuerza la inclusión del
+  punto de entrada, elimina el warning de main.ts y hace la config inmune a la caché. Se borra
+  `.angular` y `ng serve` arranca limpio. Verificado: serve + build prod + 12 tests OK.
