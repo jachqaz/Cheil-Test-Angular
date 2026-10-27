@@ -72,6 +72,8 @@
   el backend la optimiza a ≤ 400 KB). Build prod OK, 12 tests Vitest verdes.
 - **Tailwind:** justificación técnica añadida al README (sección "¿Por qué Tailwind?").
   Conclusión: se mantiene; Angular Material sería sobre-ingeniería para este alcance.
+  **(2026-10-27: sección retirada del README por decisión del director; la justificación se
+  transmitió directamente en chat, no se documenta.)**
 
 ## Bitácora
 

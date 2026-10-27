@@ -53,30 +53,6 @@ son **signals** dentro del componente (patrón MVVM con la reactividad nativa de
 - **Administrador (`/admin`):** crear, listar, editar y eliminar hoteles con formulario
   reactivo validado y confirmación de borrado.
 
-## ¿Por qué Tailwind CSS en este proyecto? (justificación técnica)
-
-El enunciado pide una UI **responsiva, sencilla y moderna**, sin diseño avanzado. Tailwind es
-la elección que mejor sirve a ese objetivo, y se mantiene:
-
-1. **Velocidad sin librería de componentes.** Utilidades (`flex`, `grid`, `rounded-xl`,
-   `object-cover`) permiten construir tarjetas, formularios y tablas directamente en la
-   plantilla, sin arrastrar un design system pesado (Angular Material) que el ejercicio no
-   requiere ni justifica.
-2. **Responsividad de primera clase.** Los prefijos `sm:`/`lg:` resuelven el requisito "se
-   visualice en cualquier pantalla" de forma declarativa y local al elemento, sin media
-   queries dispersas.
-3. **Bundle mínimo.** El *tree-shaking* de Tailwind (JIT) emite solo las clases usadas; el
-   build de producción queda muy por debajo del *budget* configurado, lo que importa para el
-   artefacto de CI.
-4. **Consistencia y mantenibilidad.** Tokens centralizados en `tailwind.config.js` (p. ej. la
-   paleta `brand`) dan coherencia visual sin CSS global propenso a colisiones.
-5. **Alineación con los referentes.** Es el enfoque verificado en los proyectos de referencia
-   del equipo, lo que reduce fricción de revisión.
-
-**Conclusión:** no hay motivo técnico para cambiar de Tailwind en este alcance. Angular
-Material tendría sentido si se pidiera un sistema de componentes accesibles y temables de gran
-escala; aquí sería sobre-ingeniería. Se mantiene Tailwind.
-
 ## Ejecución
 
 ```bash
