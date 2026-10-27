@@ -92,3 +92,10 @@
   `tsconfig.app.json` (como recomienda el propio mensaje de Angular); fuerza la inclusión del
   punto de entrada, elimina el warning de main.ts y hace la config inmune a la caché. Se borra
   `.angular` y `ng serve` arranca limpio. Verificado: serve + build prod + 12 tests OK.
+- **2026-10-27 (fix 3 — CAUSA RAÍZ)** — el error seguía porque el director ejecutaba desde
+  `C:\Users\Johan\IdeaProjects\...`, que es un **junction a `D:\IdeaProjects`**. El compilador
+  de Angular no concilia las rutas entre la letra C: del junction y la D: real → "file not
+  found in TypeScript compilation". Reproducido: falla desde C:, OK desde D:. FIX definitivo:
+  `preserveSymlinks: true` en `angular.json` (options del builder) → `ng serve` arranca limpio
+  **desde cualquiera de las dos letras**. Mismo patrón de junction C:/D: que afectó a Topaz.
+  Verificado desde C: (junction) y D: (real): serve + build prod + 12 tests OK.
