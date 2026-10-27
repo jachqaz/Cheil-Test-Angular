@@ -1,0 +1,96 @@
+<h1 class="text-2xl font-bold text-slate-800 mb-4">Administración de hoteles</h1>
+
+@if (error()) {
+  <p class="rounded-lg bg-red-50 text-red-700 px-4 py-3 mb-4">{{ error() }}</p>
+}
+
+<div class="grid gap-6 lg:grid-cols-[360px_1fr]">
+  <!-- Formulario crear / editar -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="rounded-xl bg-white border border-slate-200 p-5 shadow-sm h-fit">
+    <h2 class="font-semibold text-slate-700 mb-3">
+      {{ editingId() ? 'Editar hotel' : 'Nuevo hotel' }}
+    </h2>
+
+    <label class="block mb-3">
+      <span class="text-sm font-medium text-slate-600">Nombre</span>
+      <input formControlName="name" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-brand-500" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <span class="text-xs text-red-600">El nombre es obligatorio (mín. 2 caracteres).</span>
+      }
+    </label>
+
+    <label class="block mb-3">
+      <span class="text-sm font-medium text-slate-600">Dirección</span>
+      <input formControlName="address" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-brand-500" />
+      @if (form.controls.address.touched && form.controls.address.invalid) {
+        <span class="text-xs text-red-600">La dirección es obligatoria.</span>
+      }
+    </label>
+
+    <label class="block mb-3">
+      <span class="text-sm font-medium text-slate-600">Ciudad</span>
+      <input formControlName="city" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-brand-500" />
+      @if (form.controls.city.touched && form.controls.city.invalid) {
+        <span class="text-xs text-red-600">La ciudad es obligatoria.</span>
+      }
+    </label>
+
+    <label class="block mb-3">
+      <span class="text-sm font-medium text-slate-600">Calificación</span>
+      <select formControlName="rating" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-brand-500">
+        @for (n of [1, 2, 3, 4, 5]; track n) {
+          <option [value]="n">{{ n }} ★</option>
+        }
+      </select>
+    </label>
+
+    <label class="block mb-4">
+      <span class="text-sm font-medium text-slate-600">Descripción</span>
+      <textarea formControlName="description" rows="3" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-brand-500"></textarea>
+    </label>
+
+    <div class="flex gap-2">
+      <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-white font-medium hover:bg-brand-700 transition">
+        {{ editingId() ? 'Guardar cambios' : 'Crear hotel' }}
+      </button>
+      @if (editingId()) {
+        <button type="button" (click)="resetForm()" class="rounded-lg border border-slate-300 px-4 py-2 font-medium hover:bg-slate-100 transition">
+          Cancelar
+        </button>
+      }
+    </div>
+  </form>
+
+  <!-- Listado -->
+  <div class="rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+    @if (loading()) {
+      <p class="p-5 text-slate-500">Cargando…</p>
+    } @else if (hotels().length === 0) {
+      <p class="p-5 text-slate-500">Aún no hay hoteles. Crea el primero.</p>
+    } @else {
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-500 text-left">
+          <tr>
+            <th class="px-4 py-3 font-medium">Nombre</th>
+            <th class="px-4 py-3 font-medium">Ciudad</th>
+            <th class="px-4 py-3 font-medium">Calif.</th>
+            <th class="px-4 py-3 font-medium text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          @for (hotel of hotels(); track hotel.id) {
+            <tr class="hover:bg-slate-50">
+              <td class="px-4 py-3 font-medium text-slate-800">{{ hotel.name }}</td>
+              <td class="px-4 py-3 text-slate-600">{{ hotel.city }}</td>
+              <td class="px-4 py-3"><app-star-rating [rating]="hotel.rating" /></td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <button (click)="edit(hotel)" class="rounded-md px-2 py-1 text-brand-600 hover:bg-brand-50 transition">Editar</button>
+                <button (click)="remove(hotel)" class="rounded-md px-2 py-1 text-red-600 hover:bg-red-50 transition">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

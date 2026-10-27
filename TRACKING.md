@@ -19,34 +19,54 @@
 
 | # | Funcionalidad | Estado |
 | --- | --- | --- |
-| A1 | Crear hoteles | TODO |
-| A2 | Listar hoteles | TODO |
-| A3 | Editar hoteles | TODO |
-| A4 | Eliminar hoteles | TODO |
+| A1 | Crear hoteles | FINISH |
+| A2 | Listar hoteles | FINISH |
+| A3 | Editar hoteles | FINISH |
+| A4 | Eliminar hoteles | FINISH |
 
 ### Usuario
 
 | # | Funcionalidad | Estado |
 | --- | --- | --- |
-| U1 | Landing con introducción a la cadena | TODO |
-| U2 | Listar todos los hoteles | TODO |
-| U3 | Buscar por nombre | TODO |
-| U4 | Buscar por calificación | TODO |
+| U1 | Landing con introducción a la cadena | FINISH |
+| U2 | Listar todos los hoteles | FINISH |
+| U3 | Buscar por nombre | FINISH |
+| U4 | Buscar por calificación | FINISH |
 
 ## Requisitos no funcionales
 
 | # | Ítem | Estado |
 | --- | --- | --- |
-| NA1 | Consumo de la API (servicio HTTP, entornos) | TODO |
-| NA2 | Responsividad (cualquier pantalla) | TODO |
-| NA3 | Separación Admin / Usuario (rutas) | TODO |
-| NA4 | Pruebas unitarias | TODO |
-| NA5 | Build final en verde | TODO |
+| NA1 | Consumo de la API (servicio HTTP, entornos) | FINISH |
+| NA2 | Responsividad (cualquier pantalla) | FINISH |
+| NA3 | Separación Admin / Usuario (rutas) | FINISH |
+| NA4 | Pruebas unitarias | FINISH (12 Vitest) |
+| NA5 | Build final en verde | FINISH |
 
-## Decisiones pendientes
+## Decisiones
 
-- [ ] Estrategia de estilos: Angular Material / Tailwind / CSS plano.
+- Estilos: **Tailwind CSS** (patrón del referente Ceiba verificado).
+- Estado: **Signals** (MVVM) con la reactividad nativa de Angular 22.
+
+## Avance 2026-10-27 (F3 frontend, rama develop)
+
+- **Clean Architecture + MVVM:** `domain` (modelo Hotel), `data` (`HotelService` HTTP),
+  `presentation` (landing usuario, admin CRUD, StarRating compartido). Signals como ViewModel.
+- **Usuario (`/`):** intro + listado en tarjetas + búsqueda por nombre y calificación mínima,
+  responsiva.
+- **Admin (`/admin`):** CRUD con Reactive Forms validado y confirmación de borrado.
+- **Conexión back:** `environment.ts` → `http://localhost:5132/api`; CORS habilitado en el
+  backend para `http://localhost:4200`.
+- **Tailwind** configurado (`tailwind.config.js`, `.postcssrc.json`, `styles.css`).
+- **Pruebas (12 Vitest, verdes):** `HotelService` (GET/POST/PUT/DELETE + params), landing
+  (carga/error), admin (listado/validación/creación).
+- **CI:** `.github/workflows/ci.yml` → `npm ci` + test:ci + build:prod → artefacto `dist/`.
+- **README:** modelo director de orquesta + sección "Recomendaciones".
+- **Verificación:** `ng build --configuration production` OK; `ng test` 12/12.
+- **Nota:** ejecutar siempre desde `D:\IdeaProjects\Cheil` (no por junction C:).
 
 ## Bitácora
 
 - **2026-10-27** — Proyecto creado como carpeta vacía. Tracking inicializado en F0.
+- **2026-10-27** — F3 completa: admin CRUD + landing usuario + búsqueda, Tailwind, 12 tests
+  Vitest verdes, CI con artefacto, README con recomendaciones. Conectado al backend.

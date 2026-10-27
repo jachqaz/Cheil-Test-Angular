@@ -1,0 +1,42 @@
+# Copyright (c) 2026 Johan Castano (jachqaz). Cheil Hotels Frontend.
+# CI - Lint/Test/Build y artefacto (dist)
+name: CI - Build & Test
+
+on:
+  push:
+    branches: [ develop, master ]
+  pull_request:
+    branches: [ develop, master ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas (Vitest + cobertura)
+        run: npm run test:ci
+
+      - name: Build de producción
+        run: npm run build:prod
+
+      - name: Subir artefacto (dist)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cheil-hotels-frontend
+          path: dist/
+          retention-days: 30
