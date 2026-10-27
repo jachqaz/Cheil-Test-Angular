@@ -25,6 +25,7 @@ export class AdminComponent {
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly editingId = signal<string | null>(null);
+  protected selectedFile: File | null = null;
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -36,6 +37,11 @@ export class AdminComponent {
 
   constructor() {
     this.load();
+  }
+
+  protected onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files?.[0] ?? null;
   }
 
   protected load(): void {
@@ -61,9 +67,20 @@ export class AdminComponent {
     const id = this.editingId();
     const request = id ? this.hotelService.update(id, input) : this.hotelService.create(input);
     request.subscribe({
-      next: () => {
-        this.resetForm();
-        this.load();
+      next: (hotel) => {
+        const file = this.selectedFile;
+        if (file) {
+          this.hotelService.uploadImage(hotel.id, file).subscribe({
+            next: () => {
+              this.resetForm();
+              this.load();
+            },
+            error: () => this.error.set('El hotel se guardó, pero la imagen no se pudo subir.'),
+          });
+        } else {
+          this.resetForm();
+          this.load();
+        }
       },
       error: () => this.error.set('No se pudo guardar el hotel.'),
     });
@@ -92,6 +109,7 @@ export class AdminComponent {
 
   protected resetForm(): void {
     this.editingId.set(null);
+    this.selectedFile = null;
     this.form.reset({ name: '', address: '', city: '', rating: 3, description: '' });
   }
 }

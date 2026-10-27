@@ -65,6 +65,14 @@
 - **Verificación:** `ng build --configuration production` OK; `ng test` 12/12.
 - **Nota:** ejecutar siempre desde `D:\IdeaProjects\Cheil` (no por junction C:).
 
+## Avance 2026-10-27 (imagen + justificación Tailwind)
+
+- **Imagen del hotel:** `hasImage` en el modelo; `HotelService.imageUrl()` y `uploadImage()`.
+  Landing muestra la imagen (`<img>` o placeholder). Admin permite subir imagen (input file,
+  el backend la optimiza a ≤ 400 KB). Build prod OK, 12 tests Vitest verdes.
+- **Tailwind:** justificación técnica añadida al README (sección "¿Por qué Tailwind?").
+  Conclusión: se mantiene; Angular Material sería sobre-ingeniería para este alcance.
+
 ## Bitácora
 
 - **2026-10-27** — Proyecto creado como carpeta vacía. Tracking inicializado en F0.

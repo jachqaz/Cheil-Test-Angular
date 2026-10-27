@@ -11,8 +11,8 @@ import { Hotel } from '../../domain/hotel.model';
 const base = `${environment.apiBaseUrl}/hotels`;
 
 const hotels: Hotel[] = [
-  { id: 'a', name: 'Cheil Caribe', address: 'x', city: 'Cartagena', rating: 5, description: null, createdAt: '2026-01-01T00:00:00Z' },
-  { id: 'b', name: 'Cheil Andino', address: 'y', city: 'Bogotá', rating: 4, description: null, createdAt: '2026-01-01T00:00:00Z' },
+  { id: 'a', name: 'Cheil Caribe', address: 'x', city: 'Cartagena', rating: 5, description: null, createdAt: '2026-01-01T00:00:00Z', hasImage: false },
+  { id: 'b', name: 'Cheil Andino', address: 'y', city: 'Bogotá', rating: 4, description: null, createdAt: '2026-01-01T00:00:00Z', hasImage: false },
 ];
 
 describe('LandingComponent', () => {

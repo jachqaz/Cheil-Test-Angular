@@ -27,6 +27,10 @@ export class LandingComponent {
   protected name = '';
   protected minRating = 0;
 
+  protected imageUrl(id: string): string {
+    return this.hotelService.imageUrl(id);
+  }
+
   constructor() {
     this.search();
   }

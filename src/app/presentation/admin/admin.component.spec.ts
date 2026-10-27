@@ -11,7 +11,7 @@ import { Hotel } from '../../domain/hotel.model';
 const base = `${environment.apiBaseUrl}/hotels`;
 
 const existing: Hotel = {
-  id: 'a', name: 'Cheil Plaza', address: 'Calle 1', city: 'Bogotá', rating: 5, description: 'Lujo', createdAt: '2026-01-01T00:00:00Z',
+  id: 'a', name: 'Cheil Plaza', address: 'Calle 1', city: 'Bogotá', rating: 5, description: 'Lujo', createdAt: '2026-01-01T00:00:00Z', hasImage: false,
 };
 
 describe('AdminComponent', () => {

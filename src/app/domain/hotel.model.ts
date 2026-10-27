@@ -10,6 +10,7 @@ export interface Hotel {
   rating: number;
   description?: string | null;
   createdAt: string;
+  hasImage: boolean;
 }
 
 /** Datos de entrada para crear o editar un hotel. */

@@ -42,4 +42,16 @@ export class HotelService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  /** URL absoluta de la imagen de portada de un hotel (para usar en <img src>). */
+  imageUrl(id: string): string {
+    return `${this.baseUrl}/${id}/image`;
+  }
+
+  /** Sube/actualiza la imagen de portada; el backend la optimiza a <= 400 KB. */
+  uploadImage(id: string, file: File): Observable<Hotel> {
+    const form = new FormData();
+    form.append('file', file);
+    return this.http.put<Hotel>(`${this.baseUrl}/${id}/image`, form);
+  }
 }
