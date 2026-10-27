@@ -82,3 +82,8 @@
 - **2026-10-27** — Proyecto creado como carpeta vacía. Tracking inicializado en F0.
 - **2026-10-27** — F3 completa: admin CRUD + landing usuario + búsqueda, Tailwind, 12 tests
   Vitest verdes, CI con artefacto, README con recomendaciones. Conectado al backend.
+- **2026-10-27 (fix)** — `ng serve` fallaba ("file not found in TypeScript compilation" para
+  app.ts/app.config.ts/main.ts). Causa: `tsconfig.spec.json` incluía `src/**/*.ts`, lo que
+  reclamaba los archivos de la app en dos proyectos de *references* a la vez. Revertido el
+  spec a `*.d.ts` + `*.spec.ts` (el fallo original de tests era la ruta de import de
+  `environment`, ya corregida, no el include). Dev + prod + 12 tests verdes.
