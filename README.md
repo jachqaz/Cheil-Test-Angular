@@ -36,9 +36,9 @@ src/app/
 ├─ domain/            # modelo de dominio (Hotel, HotelInput, HotelFilter)
 ├─ data/              # HotelService: único acceso HTTP a la API (adaptador)
 ├─ presentation/      # vistas (ViewModel = signals)
-│  ├─ landing/        # Usuario: intro + listado + búsqueda
+│  ├─ landing/        # Usuario: intro + listado + búsqueda + modal de detalle
 │  ├─ admin/          # Administrador: CRUD con formulario reactivo
-│  └─ shared/         # StarRating (presentacional reutilizable)
+│  └─ shared/         # StarRating y HotelDetailModal (presentacionales reutilizables)
 └─ app.{ts,html,routes,config}   # shell, navegación y DI
 src/environments/     # apiBaseUrl por entorno
 ```
@@ -50,9 +50,26 @@ son **signals** dentro del componente (patrón MVVM con la reactividad nativa de
 
 - **Usuario (`/`):** introducción a la cadena, listado de hoteles en tarjetas (con imagen de
   portada o un placeholder si no tiene), búsqueda por nombre y por calificación mínima.
-  Responsiva (grid → columna en móvil).
+  Responsiva (grid → columna en móvil). Al **hacer clic en una tarjeta** se abre un modal de
+  **detalle** con la imagen y todos los campos del hotel; dentro del modal, **pulsar la imagen**
+  la muestra a pantalla completa.
 - **Administrador (`/admin`):** crear, listar, editar y eliminar hoteles con formulario
   reactivo validado y confirmación de borrado, incluida la **subida de imagen** del hotel.
+
+## Detalle del hotel (preview)
+
+Al pulsar una tarjeta de la landing, `LandingComponent` fija el id seleccionado y renderiza
+`HotelDetailModalComponent` (en `presentation/shared`), siguiendo Clean Architecture + MVVM:
+
+- **Carga desde la API.** El modal recibe el `hotelId` como `input` y, mediante un `effect`,
+  llama a `HotelService.getById(id)` para traer el detalle del backend (no reutiliza el objeto
+  del listado). El estado (`hotel`, `loading`, `error`, `zoomed`) vive en signals.
+- **Contenido.** Muestra la imagen de portada y todos los campos: nombre, ciudad, dirección,
+  calificación (estrellas + `N/5`), descripción y fecha de registro.
+- **Lightbox.** Pulsar la imagen abre una capa a pantalla completa (`object-contain`, fondo
+  oscuro) que se cierra con clic o con el botón de cerrar.
+- **Accesibilidad.** La tarjeta es operable por teclado (`role="button"`, Enter/Espacio, anillo
+  de foco); el modal y el lightbox usan `role="dialog"` / `aria-modal`.
 
 ## Imagen del hotel (consumo del criterio ≤ 400 KB)
 
@@ -96,8 +113,8 @@ extremo: arranca el backend, luego `npm start`, abre `/` (usuario) y `/admin`.
 npm test            # Vitest
 ```
 
-12 pruebas: servicio HTTP (`HttpTestingController`), landing (carga y error) y admin (listado,
-validación, creación).
+16 pruebas: servicio HTTP (`HttpTestingController`), landing (carga y error), admin (listado,
+validación, creación) y modal de detalle (carga por id, cierre y lightbox).
 
 ## CI/CD
 

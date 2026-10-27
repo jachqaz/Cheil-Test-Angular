@@ -107,3 +107,6 @@
   (total 15 Vitest). Build dev + prod OK.
 - **2026-10-27 (zoom)** — En el modal, pulsar la imagen la abre a pantalla completa (lightbox
   `object-contain`, fondo oscuro, cerrar con clic o botón). Señal `zoomed`. +1 test (total 16).
+- **2026-10-27 (docs)** — README del front actualizado: Funcionalidades (tarjetas clickeables),
+  nueva sección "Detalle del hotel (preview)" (modal por `getById`, campos, lightbox,
+  accesibilidad), árbol de `shared/` con el modal, y recuento de pruebas a 16.
