@@ -37,12 +37,14 @@ export class HotelDetailModalComponent {
   protected readonly hotel = signal<Hotel | null>(null);
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly zoomed = signal(false);
 
   constructor() {
     effect(() => {
       const id = this.hotelId();
       if (!id) {
         this.hotel.set(null);
+        this.zoomed.set(false);
         return;
       }
       this.loading.set(true);
@@ -62,6 +64,14 @@ export class HotelDetailModalComponent {
 
   protected imageUrl(id: string): string {
     return this.hotelService.imageUrl(id);
+  }
+
+  protected openZoom(): void {
+    this.zoomed.set(true);
+  }
+
+  protected closeZoom(): void {
+    this.zoomed.set(false);
   }
 
   protected close(): void {

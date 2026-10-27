@@ -75,4 +75,22 @@ describe('HotelDetailModalComponent', () => {
 
     expect(closedEmitted).toBe(true);
   });
+
+  it('al pulsar la imagen abre el lightbox a pantalla completa', async () => {
+    const fixture = TestBed.createComponent(HotelDetailModalComponent);
+    fixture.componentRef.setInput('hotelId', 'a1');
+    fixture.detectChanges();
+    httpMock.expectOne(`${base}/a1`).flush(sample);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const cover = host.querySelector('img.cursor-zoom-in') as HTMLImageElement;
+    expect(cover).toBeTruthy();
+
+    cover.click();
+    fixture.detectChanges();
+
+    expect(host.querySelector('[aria-label="Imagen completa"]')).toBeTruthy();
+  });
 });

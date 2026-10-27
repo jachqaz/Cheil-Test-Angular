@@ -105,3 +105,5 @@
   `getById(id)` desde la API y muestra imagen + todos los campos (ciudad, dirección,
   calificación, descripción, fecha). Tarjeta accesible (role=button, Enter/Espacio). +3 tests
   (total 15 Vitest). Build dev + prod OK.
+- **2026-10-27 (zoom)** — En el modal, pulsar la imagen la abre a pantalla completa (lightbox
+  `object-contain`, fondo oscuro, cerrar con clic o botón). Señal `zoomed`. +1 test (total 16).
