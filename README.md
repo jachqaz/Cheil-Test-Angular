@@ -5,9 +5,9 @@
 
 # Cheil Hotels — Frontend (Angular 22)
 
-Aplicación web para la cadena de hoteles Cheil. Resuelve el **Ejercicio 2** de la prueba
-técnica NTS: un panel de **Administrador** (CRUD de hoteles) y una **landing de Usuario**
-con listado y búsqueda por nombre o calificación. Consume la API REST del backend.
+Aplicación web para la gestión y búsqueda de una cadena de hoteles. Ofrece un panel de
+**Administrador** (CRUD de hoteles) y una **landing de Usuario** con listado y búsqueda por
+nombre o calificación, consumiendo la API REST del backend.
 
 ## Modelo de trabajo: orquestación humano + agente
 
@@ -16,7 +16,8 @@ patrones y el criterio de UI/UX; un agente los ejecuta con evidencia y trazabili
 
 - **Director de orquesta — Johan Castano (`jachqaz`).** Fija el stack (Angular 22, Signals,
   Tailwind), la **Clean Architecture** del front, el patrón **MVVM**, la estrategia de
-  pruebas y la política de commits (firmados, con preprocesado, sin push automático).
+  pruebas y la política de control de versiones (commits firmados, con preprocesado, y
+  publicación revisada por el responsable).
 - **Agente ejecutor — Kiro (modelo Auto).** Implementa componentes, servicios y pruebas, y
   verifica contra `build` y `test`. Trabaja guiado, dentro de las decisiones del director.
 
@@ -71,33 +72,36 @@ Al pulsar una tarjeta de la landing, `LandingComponent` fija el id seleccionado 
 - **Accesibilidad.** La tarjeta es operable por teclado (`role="button"`, Enter/Espacio, anillo
   de foco); el modal y el lightbox usan `role="dialog"` / `aria-modal`.
 
-## Imagen del hotel (consumo del criterio ≤ 400 KB)
+## Imagen del hotel
 
-El backend es el responsable de la regla de peso: optimiza cada imagen a **≤ 400 KB
-conservando la máxima calidad** (resize + compresión JPEG; ver README del backend). El front
-**no** comprime ni redimensiona: envía el archivo original y confía en esa optimización del
-servidor, que es la única fuente de verdad del límite.
+La optimización de la imagen (peso máximo de 400 KB conservando la máxima calidad) es
+responsabilidad del backend —resize + compresión JPEG; ver el README del backend—. El front
+envía el archivo original y delega esa optimización en el servidor, que es la única fuente de
+verdad del límite.
 
-- **Subida (admin).** El formulario tiene un `<input type="file">`
+- **Subida (admin).** El formulario incluye un `<input type="file">`
   (`accept="image/jpeg,image/png,image/webp"`). Al guardar un hotel, si se seleccionó archivo,
   `HotelService.uploadImage(id, file)` lo envía como `multipart/form-data` (campo `file`) con
   `PUT /api/hotels/{id}/image`. La subida se **encadena después** de crear/editar el hotel; si
   el hotel se guarda pero la imagen falla, se muestra un aviso específico sin perder el alta.
 - **Visualización (usuario).** Cada tarjeta usa `HotelService.imageUrl(id)` como `src` de un
   `<img>` cuando `hotel.hasImage` es `true`; si no, muestra un placeholder. El DTO expone solo
-  `hasImage` (bool), no los bytes, para que el listado sea liviano; la imagen se pide aparte
-  por su URL (`GET /api/hotels/{id}/image`) y el navegador la cachea.
-- **Sin acoplar el límite al cliente.** El tope de 400 KB no se valida en el front: así la
-  regla vive en un único lugar (el servidor) y el cliente no queda desincronizado si cambia.
+  `hasImage` (bool), no los bytes, para que el listado sea liviano; la imagen se solicita
+  aparte por su URL (`GET /api/hotels/{id}/image`) y el navegador la cachea.
+- **Límite no acoplado al cliente.** El tope de 400 KB no se valida en el front: la regla
+  reside en un único lugar (el servidor), de modo que el cliente no queda desincronizado si
+  cambia.
 
 ## Ejecución
 
 ```bash
-vfox use node@24
+vfox use node@24      # o, sin vfox: usar Node 24 LTS instalado en el sistema
 npm install
 npm start           # http://localhost:4200
 ```
 
+> Requiere **Node 24 LTS**. Si usas vfox, `vfox use node@24` fija la versión en la sesión; si
+> no, basta con tener Node 24 en el `PATH` (p. ej. instalado con nvm o desde nodejs.org).
 > Requiere el backend arriba en `http://localhost:5132` (ver `Cheil-Test-Net`). La URL de la
 > API se configura en `src/environments/environment.ts`.
 
@@ -122,11 +126,11 @@ validación, creación) y modal de detalle (carga por id, cierre y lightbox).
 cobertura y build de producción publicado como artefacto `dist/`. La cobertura usa
 `@vitest/coverage-v8` (devDependency requerida por `ng test --coverage`).
 
-## Recomendaciones (fuera del alcance de la prueba)
+## Recomendaciones y evolución
 
-> El enunciado pide una UI sencilla y responsiva, sin diseño avanzado. Las siguientes mejoras
-> **no se implementaron** para respetar ese alcance; se documentan como criterio de ingeniería
-> frontend para un producto real.
+> El alcance actual prioriza una interfaz clara y responsiva. Las siguientes líneas de
+> evolución no están implementadas todavía; se documentan como criterio de ingeniería frontend
+> para llevar la aplicación a un producto en producción.
 
 1. **Autenticación del administrador.** El panel `/admin` hoy es abierto. En producción lo
    protegería con un `AuthGuard` + token (JWT/OIDC) y un interceptor que adjunte el `Bearer`,
@@ -144,7 +148,7 @@ cobertura y build de producción publicado como artefacto `dist/`. La cobertura 
 6. **Entrega.** Despliegue del artefacto `dist/` en un CDN/estático (GitHub Pages, S3+CloudFront)
    con `base-href` por entorno y verificación de *bundle budget* en el pipeline.
 
-Son *trade-offs* conscientes: el ejercicio prioriza claridad y alcance acotado.
+Cada línea es un *trade-off* consciente, priorizando claridad y un alcance acotado.
 
 ---
 _Desarrollado con asistencia de Kiro AI (modelo Auto) bajo la dirección de Johan Castano (jachqaz)._
