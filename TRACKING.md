@@ -70,6 +70,8 @@
 - **Imagen del hotel:** `hasImage` en el modelo; `HotelService.imageUrl()` y `uploadImage()`.
   Landing muestra la imagen (`<img>` o placeholder). Admin permite subir imagen (input file,
   el backend la optimiza a ≤ 400 KB). Build prod OK, 12 tests Vitest verdes.
+  **(2026-10-27: documentada en el README del front — sección "Imagen del hotel" + mención en
+  Funcionalidades — cerrando la discrepancia con el README del back.)**
 - **Tailwind:** justificación técnica añadida al README (sección "¿Por qué Tailwind?").
   Conclusión: se mantiene; Angular Material sería sobre-ingeniería para este alcance.
   **(2026-10-27: sección retirada del README por decisión del director; la justificación se

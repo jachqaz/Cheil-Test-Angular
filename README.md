@@ -48,10 +48,30 @@ son **signals** dentro del componente (patrón MVVM con la reactividad nativa de
 
 ## Funcionalidades
 
-- **Usuario (`/`):** introducción a la cadena, listado de hoteles en tarjetas, búsqueda por
-  nombre y por calificación mínima. Responsiva (grid → columna en móvil).
+- **Usuario (`/`):** introducción a la cadena, listado de hoteles en tarjetas (con imagen de
+  portada o un placeholder si no tiene), búsqueda por nombre y por calificación mínima.
+  Responsiva (grid → columna en móvil).
 - **Administrador (`/admin`):** crear, listar, editar y eliminar hoteles con formulario
-  reactivo validado y confirmación de borrado.
+  reactivo validado y confirmación de borrado, incluida la **subida de imagen** del hotel.
+
+## Imagen del hotel (consumo del criterio ≤ 400 KB)
+
+El backend es el responsable de la regla de peso: optimiza cada imagen a **≤ 400 KB
+conservando la máxima calidad** (resize + compresión JPEG; ver README del backend). El front
+**no** comprime ni redimensiona: envía el archivo original y confía en esa optimización del
+servidor, que es la única fuente de verdad del límite.
+
+- **Subida (admin).** El formulario tiene un `<input type="file">`
+  (`accept="image/jpeg,image/png,image/webp"`). Al guardar un hotel, si se seleccionó archivo,
+  `HotelService.uploadImage(id, file)` lo envía como `multipart/form-data` (campo `file`) con
+  `PUT /api/hotels/{id}/image`. La subida se **encadena después** de crear/editar el hotel; si
+  el hotel se guarda pero la imagen falla, se muestra un aviso específico sin perder el alta.
+- **Visualización (usuario).** Cada tarjeta usa `HotelService.imageUrl(id)` como `src` de un
+  `<img>` cuando `hotel.hasImage` es `true`; si no, muestra un placeholder. El DTO expone solo
+  `hasImage` (bool), no los bytes, para que el listado sea liviano; la imagen se pide aparte
+  por su URL (`GET /api/hotels/{id}/image`) y el navegador la cachea.
+- **Sin acoplar el límite al cliente.** El tope de 400 KB no se valida en el front: así la
+  regla vive en un único lugar (el servidor) y el cliente no queda desincronizado si cambia.
 
 ## Ejecución
 
