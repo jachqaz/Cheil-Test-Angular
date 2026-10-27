@@ -51,7 +51,15 @@
 } @else {
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     @for (hotel of hotels(); track hotel.id) {
-      <article class="rounded-xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+      <article
+        (click)="openDetail(hotel.id)"
+        (keydown.enter)="openDetail(hotel.id)"
+        (keydown.space)="openDetail(hotel.id)"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="'Ver detalle de ' + hotel.name"
+        class="cursor-pointer rounded-xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md hover:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-300 transition"
+      >
         @if (hotel.hasImage) {
           <img [src]="imageUrl(hotel.id)" [alt]="hotel.name" class="h-40 w-full object-cover" loading="lazy" />
         } @else {
@@ -71,3 +79,5 @@
     }
   </div>
 }
+
+<app-hotel-detail-modal [hotelId]="selectedId()" (closed)="closeDetail()" />

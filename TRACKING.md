@@ -99,3 +99,9 @@
   `preserveSymlinks: true` en `angular.json` (options del builder) → `ng serve` arranca limpio
   **desde cualquiera de las dos letras**. Mismo patrón de junction C:/D: que afectó a Topaz.
   Verificado desde C: (junction) y D: (real): serve + build prod + 12 tests OK.
+  **(Revertido luego por indicación del director: ejecutará desde la ruta real D:.)**
+- **2026-10-27 (preview)** — Tarjetas de la landing clickeables → modal de detalle
+  `HotelDetailModalComponent` (presentation/shared, MVVM/signals). Carga el hotel por
+  `getById(id)` desde la API y muestra imagen + todos los campos (ciudad, dirección,
+  calificación, descripción, fecha). Tarjeta accesible (role=button, Enter/Espacio). +3 tests
+  (total 15 Vitest). Build dev + prod OK.

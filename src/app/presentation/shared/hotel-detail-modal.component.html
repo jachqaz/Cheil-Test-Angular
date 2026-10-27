@@ -1,0 +1,71 @@
+@if (hotelId()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    (click)="close()"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl"
+      (click)="$event.stopPropagation()"
+    >
+      @if (loading()) {
+        <p class="p-8 text-center text-slate-500">Cargando detalle…</p>
+      } @else if (error()) {
+        <div class="p-8">
+          <p class="rounded-lg bg-red-50 text-red-700 px-4 py-3">{{ error() }}</p>
+          <button (click)="close()" class="mt-4 rounded-lg border border-slate-300 px-4 py-2 font-medium hover:bg-slate-100">
+            Cerrar
+          </button>
+        </div>
+      } @else if (hotel(); as h) {
+        <div class="relative">
+          @if (h.hasImage) {
+            <img [src]="imageUrl(h.id)" [alt]="h.name" class="h-56 w-full object-cover rounded-t-2xl" />
+          } @else {
+            <div class="h-56 w-full grid place-items-center bg-slate-100 text-6xl rounded-t-2xl">🏨</div>
+          }
+          <button
+            (click)="close()"
+            aria-label="Cerrar"
+            class="absolute top-3 right-3 h-9 w-9 grid place-items-center rounded-full bg-black/40 text-white hover:bg-black/60"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="p-6">
+          <div class="flex items-start justify-between gap-3">
+            <h2 class="text-xl font-bold text-slate-800">{{ h.name }}</h2>
+            <app-star-rating [rating]="h.rating" />
+          </div>
+
+          <dl class="mt-4 grid grid-cols-1 gap-3 text-sm">
+            <div>
+              <dt class="font-medium text-slate-500">Ciudad</dt>
+              <dd class="text-slate-800">{{ h.city }}</dd>
+            </div>
+            <div>
+              <dt class="font-medium text-slate-500">Dirección</dt>
+              <dd class="text-slate-800">{{ h.address }}</dd>
+            </div>
+            <div>
+              <dt class="font-medium text-slate-500">Calificación</dt>
+              <dd class="text-slate-800">{{ h.rating }} / 5</dd>
+            </div>
+            @if (h.description) {
+              <div>
+                <dt class="font-medium text-slate-500">Descripción</dt>
+                <dd class="text-slate-800">{{ h.description }}</dd>
+              </div>
+            }
+            <div>
+              <dt class="font-medium text-slate-500">Registrado</dt>
+              <dd class="text-slate-800">{{ h.createdAt | date: 'medium' }}</dd>
+            </div>
+          </dl>
+        </div>
+      }
+    </div>
+  </div>
+}

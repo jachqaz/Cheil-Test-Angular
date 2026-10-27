@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HotelService } from '../../data/hotel.service';
 import { Hotel } from '../../domain/hotel.model';
 import { StarRatingComponent } from '../shared/star-rating.component';
+import { HotelDetailModalComponent } from '../shared/hotel-detail-modal.component';
 
 /**
  * Landing de usuario (MVVM): introducción a la cadena, listado de hoteles y
@@ -14,7 +15,7 @@ import { StarRatingComponent } from '../shared/star-rating.component';
 @Component({
   selector: 'app-landing',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, StarRatingComponent],
+  imports: [FormsModule, StarRatingComponent, HotelDetailModalComponent],
   templateUrl: './landing.component.html',
 })
 export class LandingComponent {
@@ -23,12 +24,21 @@ export class LandingComponent {
   protected readonly hotels = signal<Hotel[]>([]);
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly selectedId = signal<string | null>(null);
 
   protected name = '';
   protected minRating = 0;
 
   protected imageUrl(id: string): string {
     return this.hotelService.imageUrl(id);
+  }
+
+  protected openDetail(id: string): void {
+    this.selectedId.set(id);
+  }
+
+  protected closeDetail(): void {
+    this.selectedId.set(null);
   }
 
   constructor() {
