@@ -119,7 +119,8 @@ validación, creación) y modal de detalle (carga por id, cierre y lightbox).
 ## CI/CD
 
 `.github/workflows/ci.yml`: en cada `push`/`PR` a `develop`/`master` → `npm ci`, pruebas con
-cobertura y build de producción publicado como artefacto `dist/`.
+cobertura y build de producción publicado como artefacto `dist/`. La cobertura usa
+`@vitest/coverage-v8` (devDependency requerida por `ng test --coverage`).
 
 ## Recomendaciones (fuera del alcance de la prueba)
 

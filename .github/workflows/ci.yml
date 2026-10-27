@@ -4,7 +4,7 @@ name: CI - Build & Test
 
 on:
   push:
-    branches: [ develop, master, ci-fix/github-actions-front ]
+    branches: [ develop, master ]
   pull_request:
     branches: [ develop, master ]
 

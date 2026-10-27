@@ -110,3 +110,10 @@
 - **2026-10-27 (docs)** — README del front actualizado: Funcionalidades (tarjetas clickeables),
   nueva sección "Detalle del hotel (preview)" (modal por `getById`, campos, lightbox,
   accesibilidad), árbol de `shared/` con el modal, y recuento de pruebas a 16.
+- **2026-10-27 (ci-fix)** — CAUSA RAÍZ del fallo de GitHub Actions: `test:ci` corre
+  `ng test --coverage` pero faltaba `@vitest/coverage-v8`. Se trabajó en rama
+  `ci-fix/github-actions-front` (añadido `@vitest/coverage-v8@^5`, alineado con vitest 5.0.5).
+  El director subió la rama y **GitHub Actions pasó**. Merge no-ff a `develop` (`4cbfe6a`) y
+  ajuste final del workflow: triggers de vuelta a `[ develop, master ]` (retirada la rama
+  temporal). Verificado local: `npm ci` + `test:ci` 16/16 con cobertura v8 + `build:prod` OK.
+  Sin push.
